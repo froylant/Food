@@ -205,6 +205,13 @@ function Restaurant() {
     );
   }
 
+  function handlePaymentMethodChange(nextMethod) {
+    setPaymentMethod(nextMethod);
+    if (nextMethod !== "cash") {
+      setCashReceived("");
+    }
+  }
+
   function continueToPayment(event) {
     event.preventDefault();
     if (cart.length) setPage("payment");
@@ -236,6 +243,7 @@ function Restaurant() {
     setCart([]);
     setCustomerName("");
     setCashReceived("");
+    setPaymentMethod("cash");
     setPage("order");
   }
 
@@ -411,7 +419,7 @@ function Restaurant() {
                       <input
                         checked={paymentMethod === method.id}
                         name="payment-method"
-                        onChange={() => setPaymentMethod(method.id)}
+                        onChange={() => handlePaymentMethodChange(method.id)}
                         type="radio"
                         value={method.id}
                       />
@@ -456,10 +464,7 @@ function Restaurant() {
                     </p>
                   </div>
                 )}
-                <p className="payment-disclaimer">
-                  Demo checkout. Cash at sukli lang ang kinukuwenta rito; hindi
-                  pa talaga sinisingil ang GCash o card.
-                </p>
+
                 <button
                   className="checkout-button"
                   disabled={cashPaymentInsufficient}
